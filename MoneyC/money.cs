@@ -3,10 +3,12 @@ using System.Windows.Forms;
 using Microsoft.VisualBasic;
 public class Money
 {
+    
     public string inputstr;                                                  // Ввод всех оценок
     public char[] allmarks;
     public int[] marks = new int[6];                                        // Массив для храниния обработанных оценок и результата
     protected int[] allmarksInt;                                            // Массив для проверки првильности ввода
+    public bool stateTclose = false;
     public Money()
     {
        
@@ -14,29 +16,34 @@ public class Money
     }
     public void input()
     {
-      mylabel1:                                                            // Возврат если вылетит исключение
-        inputstr = Interaction.InputBox("Введите все оценки", "Ввод оценок");// Вводим оценки
+       mylabel1:
+        inputstr = Interaction.InputBox("Введите все оценки, для выхода введите 'exit' ", "Ввод оценок");// Вводим оценки
         allmarks = inputstr.ToCharArray();                                   // И конвертируем их в массив символов
         allmarksInt = Array.ConvertAll(allmarks, c => (int)Char.GetNumericValue(c)); // заполняем массив инт конвертируя чар
-        
-        try                                                                  // try
-        {
-            for (int i = 0; i < inputstr.Length; i++)
-            {
-                if (allmarksInt[i] > 5 || allmarksInt[i] <= 1 || allmarksInt[i] == '\0')
+            try                                                                  // try
                 {
-                    throw new Exception("Вводите только числа 2,3,4,5");       //Генерируется исключение
-                }
-            }
+                    for (int i = 0; i < inputstr.Length; i++)
+                    {
+                        if (allmarksInt[i] > 5 || allmarksInt[i] <= 1 || allmarksInt[i] == '\0')
+                        {
+                            throw new Exception("Вводите только числа 2,3,4,5");       //Генерируется исключение
+                        }
+                    }
 
+                }
+
+            catch (Exception e)
+        {      
+            if (inputstr == "exit") { stateTclose = true; }
+                else
+                {
+                    MessageBox.Show(e.Message);
+                goto mylabel1;
+                }
         }
-        
-        catch (Exception e)                                                  //Обработка исключения
-        {
-            MessageBox.Show(e.Message);
-            goto mylabel1;
-        }
+           
     }
+
     public void math(string h) {
         inputstr = h;                                                         //нужно для юнит теста
         allmarks = inputstr.ToCharArray();                                    //
@@ -62,6 +69,10 @@ public class Money
         string result = Convert.ToString(marks[0]);                                       // конвертируем результат в чар для вывода в мессадж бох
         MessageBox.Show(result, "Your result: ");
     }
+
+   
+   
+
 }
 
 class Averenge : Money
@@ -89,36 +100,39 @@ class Averenge : Money
 
 class moneymain
 {
+    
     static void Main()
     {
         mylabel2:
        string a;
-        a = Interaction.InputBox("Напишите 'averenge' если хотите узнать средний балл или 'money' что бы узнать количество денег", "Что вы хотите?");
-        if (a == "money")
+        a = Interaction.InputBox("Напишите 'averenge' если хотите узнать средний балл или 'money' что бы узнать количество денег. Введите 'exit' для выхода", "Что вы хотите?");
+        while (true)
         {
-            Money A = new Money() ;
-            A.input();
-            A.math(A.inputstr);                 //A.inputstr возвращает значение inputstr в функцию math() для юнит теста
+            if (a == "money")
+            {
+                Money A = new Money();
+                A.input();
+                if(A.stateTclose == true) { break; }
+                A.math(A.inputstr);                 //A.inputstr возвращает значение inputstr в функцию math() для юнит теста
+            }
+
+            else if (a == "averenge")
+            {
+                Averenge B = new Averenge();
+                B.input();
+                B.AverengeSumMath();
+            }
+            else if (a == "exit"){break;}
+            else 
+            {
+                MessageBox.Show("Error1 введено неверное значение", "Ошибка!");
+                goto mylabel2;
+               
+            }
+            
+            
         }
 
-        else if(a == "averenge")
-        {
-            Averenge B = new Averenge(); 
-            B.input();
-            B.AverengeSumMath();
-        }
-        else if(a=="e")
-        {
-            MessageBox.Show("Выйтu?");
-            goto mylabel3;
-        }
-        else
-        {
-            MessageBox.Show("Error1 введено неверное значение", "Ошибка!");
-            goto mylabel2;
-        }
-        mylabel3:
-        while (Console.ReadKey().Key != ConsoleKey.Escape) ;
     }
 
 
