@@ -1,45 +1,45 @@
 ﻿using System;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
-class Money
+public class Money
 {
-    protected string inputstr;                                                  // Ввод всех оценок
-    protected char[] allmarks;
-    protected int[] marks = new int[6];                                        // Массив для храниния обработанных оценок и результата
-    protected int[] allmarksInt;                                               // Массив для проверки првильности ввода
+    public string inputstr;                                                  // Ввод всех оценок
+    public char[] allmarks;
+    public int[] marks = new int[6];                                        // Массив для храниния обработанных оценок и результата
+    protected int[] allmarksInt;                                            // Массив для проверки првильности ввода
     public Money()
     {
-        inputstr = "";
-        for(int i = 0; i<6; i++)
-        {
-            marks[i] = 0;
-        }
+       
 
     }
     public void input()
     {
-    mylabel1:                                                            // Возврат если вылетит исключение
+      mylabel1:                                                            // Возврат если вылетит исключение
         inputstr = Interaction.InputBox("Введите все оценки", "Ввод оценок");// Вводим оценки
         allmarks = inputstr.ToCharArray();                                   // И конвертируем их в массив символов
         allmarksInt = Array.ConvertAll(allmarks, c => (int)Char.GetNumericValue(c)); // заполняем массив инт конвертируя чар
+        
         try                                                                  // try
         {
             for (int i = 0; i < inputstr.Length; i++)
             {
-                if (allmarksInt[i] > 5 || allmarks[i] <= 1)
+                if (allmarksInt[i] > 5 || allmarksInt[i] <= 1 || allmarksInt[i] == '\0')
                 {
-                    throw new Exception("Надо ввести числа 2,3,4,5");       //Генерируется исключение
+                    throw new Exception("Вводите только числа 2,3,4,5");       //Генерируется исключение
                 }
             }
 
         }
+        
         catch (Exception e)                                                  //Обработка исключения
         {
             MessageBox.Show(e.Message);
             goto mylabel1;
         }
     }
-      public void math() { 
+    public void math(string h) {
+        inputstr = h;                                                         //нужно для юнит теста
+        allmarks = inputstr.ToCharArray();                                    //
         for (int i = 0; i < inputstr.Length; i++)
         {
             switch (allmarks[i])                                        //Ищем количество каждой оценки
@@ -66,6 +66,12 @@ class Money
 
 class Averenge : Money
 {
+    public Averenge()
+    {
+       
+    }
+    
+    
     protected double[] allsum = new double[3];
     public void AverengeSumMath()
     {
@@ -90,9 +96,9 @@ class moneymain
         a = Interaction.InputBox("Напишите 'averenge' если хотите узнать средний балл или 'money' что бы узнать количество денег", "Что вы хотите?");
         if (a == "money")
         {
-            Money A = new Money();
+            Money A = new Money() ;
             A.input();
-            A.math();
+            A.math(A.inputstr);                 //A.inputstr возвращает значение inputstr в функцию math() для юнит теста
         }
 
         else if(a == "averenge")
