@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using Microsoft.VisualBasic;
 public class Money
 {
-    
+
     public string inputstr;                                                  // Ввод всех оценок
     public char[] allmarks;
     public int[] marks = new int[6];                                        // Массив для храниния обработанных оценок и результата
@@ -11,6 +11,7 @@ public class Money
     public bool stateTclose = false;
     public Money()
     {
+        inputstr = "2345";
        
 
     }
@@ -41,6 +42,7 @@ public class Money
                 goto mylabel1;
                 }
         }
+        
            
     }
 
@@ -110,17 +112,17 @@ class moneymain
         {
             if (a == "money")
             {
-                Money A = new Money();
-                A.input();
-                if(A.stateTclose == true) { break; }
-                A.math(A.inputstr);                 //A.inputstr возвращает значение inputstr в функцию math() для юнит теста
+                Money money = new Money();
+                money.input();
+                if(money.stateTclose == true) { break; }
+                money.math(money.inputstr);                 //A.inputstr возвращает значение inputstr в функцию math() для юнит теста
             }
 
             else if (a == "averenge")
             {
-                Averenge B = new Averenge();
-                B.input();
-                B.AverengeSumMath();
+                Averenge AV = new Averenge();
+                AV.input();
+                AV.AverengeSumMath();
             }
             else if (a == "exit"){break;}
             else 
