@@ -86,7 +86,7 @@ class Averenge : Money
     
     
     protected double[] allsum = new double[3];
-    public void AverengeSumMath()
+    public void math()
     {
         for (int i = 0; i < inputstr.Length; i++)       //Складываем все оценки
         {
@@ -122,7 +122,7 @@ class moneymain
             {
                 Averenge AV = new Averenge();
                 AV.input();
-                AV.AverengeSumMath();
+                AV.math();
             }
             else if (a == "exit"){break;}
             else 
